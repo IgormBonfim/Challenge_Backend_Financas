@@ -20,6 +20,6 @@ namespace Challenge_Backend_Financas.Models
 
         [Column("DataReceita")]
         [Required]
-        public DateOnly Data { get; set; }
+        public DateTime Data { get; set; }
     }
 }
