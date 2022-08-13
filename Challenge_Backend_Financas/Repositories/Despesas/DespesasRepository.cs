@@ -1,16 +1,15 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
-using Challenge_Backend_Financas.Repositories.Interfaces;
-using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
+using Challenge_Backend_Financas.Repositories.Interfaces.Despesas;
 
-namespace Challenge_Backend_Financas.Repositories.Receitas
+namespace Challenge_Backend_Financas.Repositories.Despesas
 {
-    public class ReceitasRepository : IReceitasRepository
+    public class DespesasRepository : IDespesasRepository
     {
         private readonly Contexto dbContext;
 
-        public ReceitasRepository(Contexto dbContext)
+        public DespesasRepository(Contexto dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -19,13 +18,13 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
         {
             try
             {
-                var receitaDb = new Receita()
+                var despesaDb = new Despesa()
                 {
                     Descricao = request.Descricao,
                     Valor = request.Valor,
                     Data = DateTime.Now
                 };
-                dbContext.Receitas.Add(receitaDb);
+                dbContext.Despesas.Add(despesaDb);
                 dbContext.SaveChanges();
                 return true;
             }
@@ -39,8 +38,8 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
         {
             try
             {
-                var receitaDb = dbContext.Receitas.Find(id);
-                dbContext.Receitas.Remove(receitaDb);
+                var despesaDb = dbContext.Despesas.Find(id);
+                dbContext.Despesas.Remove(despesaDb);
                 dbContext.SaveChanges();
                 return true;
             }
@@ -52,28 +51,28 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
 
         public FinancasResponse GetById(int id)
         {
-            var receitaDb = dbContext.Receitas.Find(id);
-            var receitaReturn = new FinancasResponse()
+            var despesaDb = dbContext.Despesas.Find(id);
+            var despesaReturn = new FinancasResponse()
             {
-                Descricao = receitaDb.Descricao,
-                Valor = receitaDb.Valor,
-                Data = receitaDb.Data
+                Descricao = despesaDb.Descricao,
+                Valor = despesaDb.Valor,
+                Data = despesaDb.Data
             };
-            return receitaReturn;
+            return despesaReturn;
         }
 
-        public List<Receita> List()
+        public List<Despesa> List()
         {
-            return dbContext.Receitas.ToList();
+            return dbContext.Despesas.ToList();
         }
 
         public bool Update(int id, FinancasRequest request)
         {
             try
             {
-                var receitaDb = dbContext.Receitas.Find(id);
-                receitaDb.Descricao = request.Descricao;
-                receitaDb.Valor = request.Valor;
+                var despesaDb = dbContext.Despesas.Find(id);
+                despesaDb.Descricao = request.Descricao;
+                despesaDb.Valor = request.Valor;
                 return true;
             }
             catch
