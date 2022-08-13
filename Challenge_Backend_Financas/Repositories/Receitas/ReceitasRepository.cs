@@ -1,10 +1,12 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
+using Challenge_Backend_Financas.Repositories.Interfaces;
+using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
 
 namespace Challenge_Backend_Financas.Repositories.Receitas
 {
-    public class ReceitasRepository : IFinancasRepository
+    public class ReceitasRepository : IReceitasRepository
     {
         private readonly Contexto dbContext;
 
@@ -35,22 +37,50 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var receitaDb = dbContext.Receitas.Find(id);
+                dbContext.Receitas.Remove(receitaDb);
+                dbContext.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public FinancasResponse GetById(int id)
         {
-            throw new NotImplementedException();
+            var receitaDb = dbContext.Receitas.Find(id);
+            var receitaReturn = new FinancasResponse()
+            {
+                Descricao = receitaDb.Descricao,
+                Valor = receitaDb.Valor,
+                Data = receitaDb.Data
+            };
+            return receitaReturn;
         }
 
-        public List<FinancasResponse> List()
+        public List<Receita> List()
         {
-            throw new NotImplementedException();
+            return dbContext.Receitas.ToList();
         }
 
-        public bool Update(FinancasRequest request)
+        public bool Update(int id, FinancasRequest request)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var receitaDb = dbContext.Receitas.Find(id);
+                receitaDb.Descricao = request.Descricao;
+                receitaDb.Valor = request.Valor;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+
         }
     }
 }

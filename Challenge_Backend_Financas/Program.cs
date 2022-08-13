@@ -1,5 +1,6 @@
 using Challenge_Backend_Financas.Configuracoes;
-using Challenge_Backend_Financas.Repositories;
+using Challenge_Backend_Financas.Repositories.Interfaces;
+using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
 using Challenge_Backend_Financas.Repositories.Receitas;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ builder.Services.AddDbContext<Contexto>(x => x.UseMySql(
         ServerVersion.Parse("8.0.28")
     ));
 
-builder.Services.AddScoped<IFinancasRepository, ReceitasRepository>();
+builder.Services.AddScoped<IReceitasRepository, ReceitasRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
