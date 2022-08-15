@@ -35,13 +35,9 @@ namespace Challenge_Backend_Financas.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put([FromRoute] int id, [FromBody] FinancasRequest request)
+        public Response Put([FromRoute] int id, [FromBody] FinancasRequest request)
         {
-            if (this.repository.Update(id, request))
-            {
-                return Ok(request);
-            }
-            return BadRequest();
+            return repository.Update(id, request);
         }
 
         [HttpDelete("{id}")]

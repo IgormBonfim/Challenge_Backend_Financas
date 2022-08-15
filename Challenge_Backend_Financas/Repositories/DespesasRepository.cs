@@ -23,6 +23,12 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
+                var receitaQuery = dbContext.Despesas.Where(r => r.Descricao.Equals(request.Descricao)).Where(r => r.Data.Year.Equals(request.Data.Year)).Where(r => r.Data.Month.Equals(request.Data.Month)).FirstOrDefault();
+                
+                if(receitaQuery != null)
+                {
+                    return new Response() { Mensagem = "Essa despesa já foi cadastrada esse mês" };
+                }
                 var despesaDb = new Despesa()
                 {
                     Descricao = request.Descricao,
@@ -32,11 +38,11 @@ namespace Challenge_Backend_Financas.Repositories
                 };
                 dbContext.Despesas.Add(despesaDb);
                 dbContext.SaveChanges();
-                return new Response();
+                return new Response() { Mensagem = "Despesa cadastrada com sucesso"};
             }
             catch
             {
-                return new Response();
+                return new Response() { Mensagem = "Erro ao cadastrar despesa" };
             }
         }
 
@@ -78,20 +84,35 @@ namespace Challenge_Backend_Financas.Repositories
             return dbContext.Despesas.Include(d => d.Categoria).ToList();
         }
 
-        public bool Update(int id, FinancasRequest request)
+        public Response Update(int id, FinancasRequest request)
         {
+            if (request.IdCategoria <= 0)
+            {
+                request.IdCategoria = 1;
+            }
             try
             {
+                var despesaQuery = dbContext.Despesas
+                    .Where(r => r.Descricao.Equals(request.Descricao))
+                    .Where(r => r.Data.Year.Equals(request.Data.Year))
+                    .Where(r => r.Data.Month.Equals(request.Data.Month))
+                    .FirstOrDefault();
                 var despesaDb = dbContext.Despesas.Find(id);
+
+                if (despesaQuery != null && despesaQuery.Id != id)
+                {
+                    return new Response() { Mensagem = "Não foi possível atualizar a despesa, pois a despesa está duplicada" };
+                }
+
                 despesaDb.Descricao = request.Descricao;
                 despesaDb.Valor = request.Valor;
                 dbContext.Update(despesaDb);
                 dbContext.SaveChanges();
-                return true;
+                return new Response() { Mensagem = "Despesa atualizada com sucesso"};
             }
             catch
             {
-                return false;
+                return new Response() { Mensagem = "Ocorreu um erro ao atualizar a despesa"};
             }
         }
     }

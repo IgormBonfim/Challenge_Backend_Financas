@@ -23,7 +23,7 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
-                var receitaQuery = dbContext.Receitas.Where(r => r.Descricao.Equals(request.Descricao)).Where(r => r.Data.Month.Equals(request.Data.Month)).FirstOrDefault();
+                var receitaQuery = dbContext.Receitas.Where(r => r.Descricao.Equals(request.Descricao)).Where(r => r.Data.Year.Equals(request.Data.Year)).Where(r => r.Data.Month.Equals(request.Data.Month)).FirstOrDefault();
                 if (receitaQuery != null)
                 {
                     return new Response()
@@ -50,7 +50,7 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 return new Response()
                 {
-                    Mensagem = "Ocorreu um erro"
+                    Mensagem = "Erro ao cadastrar receita"
                 };
             }
         }
@@ -94,20 +94,35 @@ namespace Challenge_Backend_Financas.Repositories
             return dbContext.Receitas.Where(r => r.Descricao.Equals(descricao)).Include(r => r.Categoria).ToList();
         }
 
-        public bool Update(int id, FinancasRequest request)
+        public Response Update(int id, FinancasRequest request)
         {
+            if (request.IdCategoria <= 0)
+            {
+                request.IdCategoria = 1;
+            }
             try
             {
+                var receitaQuery = dbContext.Receitas
+                    .Where(r => r.Descricao.Equals(request.Descricao))
+                    .Where(r => r.Data.Year.Equals(request.Data.Year))
+                    .Where(r => r.Data.Month.Equals(request.Data.Month))
+                    .FirstOrDefault();
                 var receitaDb = dbContext.Receitas.Find(id);
+
+                if (receitaQuery != null && receitaQuery.Id != id)
+                {
+                    return new Response() { Mensagem = "Não foi possível atualizar a receita, pois a receita está duplicada" };
+                }
                 receitaDb.Descricao = request.Descricao;
                 receitaDb.Valor = request.Valor;
+                receitaDb.IdCategoria = request.IdCategoria;
                 dbContext.Update(receitaDb);
                 dbContext.SaveChanges();
-                return true;
+                return new Response() { Mensagem = "Receita atualizada com sucesso" };
             }
             catch
             {
-                return false;
+                return new Response() { Mensagem = "Ocorreu um erro ao atualizar receita"};
             }
         }
     }
