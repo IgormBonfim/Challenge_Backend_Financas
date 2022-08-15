@@ -46,18 +46,18 @@ namespace Challenge_Backend_Financas.Repositories
             }
         }
 
-        public bool Delete(int id)
+        public Response Delete(int id)
         {
             try
             {
                 var despesaDb = dbContext.Despesas.Find(id);
                 dbContext.Despesas.Remove(despesaDb);
                 dbContext.SaveChanges();
-                return true;
+                return new Response() { Mensagem = "Despesa de descrição: " + despesaDb.Descricao + " foi removida com sucesso"};
             }
             catch
             {
-                return false;
+                return new Response() { Mensagem = "Ocorreu um erro ao remover despesa"};
             }
         }
 

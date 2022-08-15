@@ -35,13 +35,9 @@ namespace Challenge_Backend_Financas.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete([FromRoute] int id)
+        public Response Delete([FromRoute] int id)
         {
-            if (this.repository.Delete(id))
-            {
-                return Ok("Excluido");
-            }
-            return BadRequest();
+            return repository.Delete(id);
         }
 
         [HttpPost]

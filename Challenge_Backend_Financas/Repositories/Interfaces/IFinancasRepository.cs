@@ -7,6 +7,6 @@ namespace Challenge_Backend_Financas.Repositories
         public FinancasResponse GetById(int id);
         public Response Add(FinancasRequest request);
         public Response Update(int id, FinancasRequest request);
-        public bool Delete(int id);
+        public Response Delete(int id);
     }
 }

@@ -55,18 +55,18 @@ namespace Challenge_Backend_Financas.Repositories
             }
         }
 
-        public bool Delete(int id)
+        public Response Delete(int id)
         {
             try
             {
                 var receitaDb = dbContext.Receitas.Find(id);
                 dbContext.Receitas.Remove(receitaDb);
                 dbContext.SaveChanges();
-                return true;
+                return new Response() { Mensagem = "Receita de id: " + id + " removida com sucesso" };
             }
             catch
             {
-                return false;
+                return new Response() { Mensagem = "Ocorreu um erro ao remover receita" };
             }
         }
 
