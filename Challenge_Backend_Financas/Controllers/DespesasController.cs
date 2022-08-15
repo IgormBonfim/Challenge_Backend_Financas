@@ -49,14 +49,9 @@ namespace Challenge_Backend_Financas.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] FinancasRequest request)
+        public Response Create([FromBody] FinancasRequest request)
         {
-            if (this.repository.Add(request))
-            {
-
-                return Created("api/despesas", request);
-            }
-            return BadRequest();
+            return repository.Add(request);
         }
     }
 }

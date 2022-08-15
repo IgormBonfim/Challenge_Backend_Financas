@@ -15,7 +15,7 @@ namespace Challenge_Backend_Financas.Repositories
             this.dbContext = dbContext;
         }
 
-        public bool Add(FinancasRequest request)
+        public Response Add(FinancasRequest request)
         {
             if (request.IdCategoria <= 0)
             {
@@ -23,19 +23,35 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
+                var receitaQuery = dbContext.Receitas.Where(r => r.Descricao.Equals(request.Descricao)).Where(r => r.Data.Month.Equals(request.Data.Month)).FirstOrDefault();
+                if (receitaQuery != null)
+                {
+                    return new Response()
+                    {
+                        Mensagem = "Essa receita já foi cadastrada esse mês"
+                    };
+                }
+
                 var receitaDb = new Receita()
                 {
                     Descricao = request.Descricao,
                     Valor = request.Valor,
-                    Data = request.Data.Date
+                    Data = request.Data.Date,
+                    IdCategoria = request.IdCategoria,
                 };
                 dbContext.Receitas.Add(receitaDb);
                 dbContext.SaveChanges();
-                return true;
+                return new Response()
+                {
+                    Mensagem = "Receita adicionada com sucesso"
+                };
             }
             catch
             {
-                return false;
+                return new Response()
+                {
+                    Mensagem = "Ocorreu um erro"
+                };
             }
         }
 

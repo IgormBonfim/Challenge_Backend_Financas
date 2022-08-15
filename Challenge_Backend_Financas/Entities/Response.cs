@@ -2,6 +2,6 @@
 {
     public class Response
     {
-        public string? Error { get; set; }
+        public string? Mensagem { get; set; }
     }
 }

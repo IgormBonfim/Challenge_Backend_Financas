@@ -15,7 +15,7 @@ namespace Challenge_Backend_Financas.Repositories
             this.dbContext = dbContext;
         }
 
-        public bool Add(FinancasRequest request)
+        public Response Add(FinancasRequest request)
         {
             if (request.IdCategoria <= 0)
             {
@@ -32,11 +32,11 @@ namespace Challenge_Backend_Financas.Repositories
                 };
                 dbContext.Despesas.Add(despesaDb);
                 dbContext.SaveChanges();
-                return true;
+                return new Response();
             }
             catch
             {
-                return false;
+                return new Response();
             }
         }
 
