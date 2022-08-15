@@ -21,5 +21,10 @@ namespace Challenge_Backend_Financas.Models
         [Column("DataDespesa")]
         [Required]
         public DateTime Data { get; set; }
+
+        [ForeignKey("Categoria")]
+        [Column(Order = 1)]
+        public int IdCategoria { get; set; }
+        public virtual Categoria Categoria { get; set; }
     }
 }

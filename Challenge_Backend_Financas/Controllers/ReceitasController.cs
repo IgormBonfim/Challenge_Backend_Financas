@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Challenge_Backend_Financas.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/receitas")]
     [ApiController]
     public class ReceitasController : ControllerBase
     {
@@ -18,19 +18,19 @@ namespace Challenge_Backend_Financas.Controllers
             this.repository = repository;
         }
 
-        [HttpGet("/api/receitas")]
+        [HttpGet]
         public List<Receita> GetAll()
         {
             return this.repository.List();
         }
 
-        [HttpGet("/api/receitas/{id}")]
+        [HttpGet("{id}")]
         public FinancasResponse GetById([FromRoute] int id)
         {
             return repository.GetById(id);
         }
 
-        [HttpPut("/api/receitas/{id}")]
+        [HttpPut("{id}")]
         public IActionResult Put([FromRoute] int id, [FromBody] FinancasRequest request)
         {
             if (this.repository.Update(id, request))
@@ -40,7 +40,7 @@ namespace Challenge_Backend_Financas.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("/api/receitas/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
             if (this.repository.Delete(id))
@@ -50,7 +50,7 @@ namespace Challenge_Backend_Financas.Controllers
             return BadRequest();
         }
 
-        [HttpPost("/api/receitas")]
+        [HttpPost]
         public IActionResult Create([FromBody] FinancasRequest request)
         {
             if (this.repository.Add(request))

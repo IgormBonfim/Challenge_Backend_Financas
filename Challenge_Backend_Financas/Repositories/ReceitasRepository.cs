@@ -1,10 +1,10 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
-using Challenge_Backend_Financas.Repositories.Interfaces;
 using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
+using Microsoft.EntityFrameworkCore;
 
-namespace Challenge_Backend_Financas.Repositories.Receitas
+namespace Challenge_Backend_Financas.Repositories
 {
     public class ReceitasRepository : IReceitasRepository
     {
@@ -17,13 +17,17 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
 
         public bool Add(FinancasRequest request)
         {
+            if (request.IdCategoria <= 0)
+            {
+                request.IdCategoria = 1;
+            }
             try
             {
                 var receitaDb = new Receita()
                 {
                     Descricao = request.Descricao,
                     Valor = request.Valor,
-                    Data = DateTime.Now
+                    Data = request.Data.Date
                 };
                 dbContext.Receitas.Add(receitaDb);
                 dbContext.SaveChanges();
@@ -53,18 +57,20 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
         public FinancasResponse GetById(int id)
         {
             var receitaDb = dbContext.Receitas.Find(id);
+            var categoriaDb = dbContext.Categorias.Find(receitaDb.IdCategoria);
             var receitaReturn = new FinancasResponse()
             {
                 Descricao = receitaDb.Descricao,
                 Valor = receitaDb.Valor,
-                Data = receitaDb.Data
+                Data = receitaDb.Data,
+                Categoria = categoriaDb
             };
             return receitaReturn;
         }
 
         public List<Receita> List()
         {
-            return dbContext.Receitas.ToList();
+            return dbContext.Receitas.Include(r => r.Categoria).ToList();
         }
 
         public bool Update(int id, FinancasRequest request)
@@ -74,6 +80,8 @@ namespace Challenge_Backend_Financas.Repositories.Receitas
                 var receitaDb = dbContext.Receitas.Find(id);
                 receitaDb.Descricao = request.Descricao;
                 receitaDb.Valor = request.Valor;
+                dbContext.Update(receitaDb);
+                dbContext.SaveChanges();
                 return true;
             }
             catch

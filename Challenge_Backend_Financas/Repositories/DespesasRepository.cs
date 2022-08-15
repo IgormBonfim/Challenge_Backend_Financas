@@ -2,8 +2,9 @@
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
 using Challenge_Backend_Financas.Repositories.Interfaces.Despesas;
+using Microsoft.EntityFrameworkCore;
 
-namespace Challenge_Backend_Financas.Repositories.Despesas
+namespace Challenge_Backend_Financas.Repositories
 {
     public class DespesasRepository : IDespesasRepository
     {
@@ -16,13 +17,18 @@ namespace Challenge_Backend_Financas.Repositories.Despesas
 
         public bool Add(FinancasRequest request)
         {
+            if (request.IdCategoria <= 0)
+            {
+                request.IdCategoria = 1;
+            }
             try
             {
                 var despesaDb = new Despesa()
                 {
                     Descricao = request.Descricao,
                     Valor = request.Valor,
-                    Data = DateTime.Now
+                    IdCategoria = request.IdCategoria,
+                    Data = request.Data.Date,
                 };
                 dbContext.Despesas.Add(despesaDb);
                 dbContext.SaveChanges();
@@ -52,18 +58,24 @@ namespace Challenge_Backend_Financas.Repositories.Despesas
         public FinancasResponse GetById(int id)
         {
             var despesaDb = dbContext.Despesas.Find(id);
-            var despesaReturn = new FinancasResponse()
+            var categoriaDb = dbContext.Categorias.Find(despesaDb.IdCategoria);
+            var despesaResponse = new FinancasResponse()
             {
                 Descricao = despesaDb.Descricao,
                 Valor = despesaDb.Valor,
-                Data = despesaDb.Data
+                Data = despesaDb.Data,
+                Categoria = new Categoria
+                {
+                    Id = categoriaDb.Id,
+                    NomeCategoria = categoriaDb.NomeCategoria
+                }
             };
-            return despesaReturn;
+            return despesaResponse;
         }
 
         public List<Despesa> List()
         {
-            return dbContext.Despesas.ToList();
+            return dbContext.Despesas.Include(d => d.Categoria).ToList();
         }
 
         public bool Update(int id, FinancasRequest request)
@@ -73,6 +85,8 @@ namespace Challenge_Backend_Financas.Repositories.Despesas
                 var despesaDb = dbContext.Despesas.Find(id);
                 despesaDb.Descricao = request.Descricao;
                 despesaDb.Valor = request.Valor;
+                dbContext.Update(despesaDb);
+                dbContext.SaveChanges();
                 return true;
             }
             catch
