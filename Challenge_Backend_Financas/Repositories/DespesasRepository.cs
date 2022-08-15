@@ -1,7 +1,7 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
-using Challenge_Backend_Financas.Repositories.Interfaces.Despesas;
+using Challenge_Backend_Financas.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Challenge_Backend_Financas.Repositories

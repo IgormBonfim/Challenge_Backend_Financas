@@ -1,8 +1,6 @@
 ﻿using Challenge_Backend_Financas.Entities;
-using Challenge_Backend_Financas.Entities.Receitas;
 using Challenge_Backend_Financas.Models;
 using Challenge_Backend_Financas.Repositories.Interfaces;
-using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +26,12 @@ namespace Challenge_Backend_Financas.Controllers
         public FinancasResponse GetById([FromRoute] int id)
         {
             return repository.GetById(id);
+        }
+
+        [HttpGet("descricao")]
+        public List<Receita> GetByDescricao([FromQuery] string descricao)
+        {
+            return repository.ListByDescicao(descricao);
         }
 
         [HttpPut("{id}")]

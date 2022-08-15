@@ -1,7 +1,7 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
-using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
+using Challenge_Backend_Financas.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Challenge_Backend_Financas.Repositories
@@ -71,6 +71,11 @@ namespace Challenge_Backend_Financas.Repositories
         public List<Receita> List()
         {
             return dbContext.Receitas.Include(r => r.Categoria).ToList();
+        }
+
+        public List<Receita> ListByDescicao(string descricao)
+        {
+            return dbContext.Receitas.Where(r => r.Descricao.Equals(descricao)).Include(r => r.Categoria).ToList();
         }
 
         public bool Update(int id, FinancasRequest request)

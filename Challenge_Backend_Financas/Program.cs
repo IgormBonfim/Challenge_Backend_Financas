@@ -1,8 +1,6 @@
 using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Repositories;
 using Challenge_Backend_Financas.Repositories.Interfaces;
-using Challenge_Backend_Financas.Repositories.Interfaces.Despesas;
-using Challenge_Backend_Financas.Repositories.Interfaces.Receitas;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
