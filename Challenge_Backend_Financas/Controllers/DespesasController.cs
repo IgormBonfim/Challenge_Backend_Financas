@@ -28,6 +28,18 @@ namespace Challenge_Backend_Financas.Controllers
             return repository.GetById(id);
         }
 
+        [HttpGet("descricao")]
+        public List<Despesa> GetByDescricao([FromQuery] string descricao)
+        {
+            return repository.ListByDescicao(descricao);
+        }
+
+        [HttpGet("{ano}/{mes}")]
+        public List<Despesa> GetByMes([FromRoute]int ano, [FromRoute] int mes)
+        {
+            return repository.ListByMes(ano, mes);
+        }
+
         [HttpPut("{id}")]
         public Response Put([FromRoute] int id, [FromBody] FinancasRequest request)
         {

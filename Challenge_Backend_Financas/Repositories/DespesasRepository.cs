@@ -84,6 +84,16 @@ namespace Challenge_Backend_Financas.Repositories
             return dbContext.Despesas.Include(d => d.Categoria).ToList();
         }
 
+        public List<Despesa> ListByDescicao(string descricao)
+        {
+            return dbContext.Despesas.Where(d => d.Descricao.Equals(descricao)).Include(d => d.Categoria).ToList();
+        }
+
+        public List<Despesa> ListByMes(int ano, int mes)
+        {
+            return dbContext.Despesas.Where(d => d.Data.Year.Equals(ano)).Where(d => d.Data.Month.Equals(mes)).Include(d => d.Categoria).ToList();
+        }
+
         public Response Update(int id, FinancasRequest request)
         {
             if (request.IdCategoria <= 0)
