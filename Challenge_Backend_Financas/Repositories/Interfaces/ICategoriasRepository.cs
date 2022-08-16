@@ -1,4 +1,5 @@
-﻿using Challenge_Backend_Financas.Entities.Categorias;
+﻿using Challenge_Backend_Financas.Entities;
+using Challenge_Backend_Financas.Entities.Categorias;
 using Challenge_Backend_Financas.Models;
 
 namespace Challenge_Backend_Financas.Repositories.Interfaces
@@ -7,8 +8,8 @@ namespace Challenge_Backend_Financas.Repositories.Interfaces
     {
         public CategoriasResponse GetById(int id);
         public List<Categoria> List();
-        public bool Add(CategoriasRequest request);
-        public bool Update(int id, CategoriasRequest request);
-        public bool Delete(int id);
+        public Response Add(CategoriasRequest request);
+        public Response Update(int id, CategoriasRequest request);
+        public Response Delete(int id);
     }
 }
