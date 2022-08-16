@@ -94,6 +94,11 @@ namespace Challenge_Backend_Financas.Repositories
             return dbContext.Receitas.Where(r => r.Descricao.Equals(descricao)).Include(r => r.Categoria).ToList();
         }
 
+        public List<Receita> ListByMes(int ano, int mes)
+        {
+            return dbContext.Receitas.Where(r => r.Data.Year.Equals(ano)).Where(r => r.Data.Month.Equals(mes)).Include(r => r.Categoria).ToList();
+        }
+
         public Response Update(int id, FinancasRequest request)
         {
             if (request.IdCategoria <= 0)

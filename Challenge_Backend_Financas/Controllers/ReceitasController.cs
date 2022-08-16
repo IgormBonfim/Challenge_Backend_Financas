@@ -34,6 +34,12 @@ namespace Challenge_Backend_Financas.Controllers
             return repository.ListByDescicao(descricao);
         }
 
+        [HttpGet("{ano}/{mes}")]
+        public List<Receita> GetByMes([FromRoute] int ano, [FromRoute] int mes)
+        {
+            return repository.ListByMes(ano, mes);
+        }
+
         [HttpPut("{id}")]
         public Response Put([FromRoute] int id, [FromBody] FinancasRequest request)
         {

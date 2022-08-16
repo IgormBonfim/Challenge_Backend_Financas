@@ -6,5 +6,6 @@ namespace Challenge_Backend_Financas.Repositories.Interfaces
     {
         public List<Receita> List();
         public List<Receita> ListByDescicao(string descricao);
+        public List<Receita> ListByMes(int ano, int mes);
     }
 }
