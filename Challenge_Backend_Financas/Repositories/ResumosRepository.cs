@@ -7,22 +7,26 @@ namespace Challenge_Backend_Financas.Repositories
     public class ResumosRepository : IResumosRepository
     {
         private readonly Contexto dbContext;
+        private readonly IReceitasRepository receitasRepository;
+        private readonly IDespesasRepository despesasRepository;
 
-        public ResumosRepository(Contexto dbContext)
+        public ResumosRepository(Contexto dbContext, IReceitasRepository receitasRepository, IDespesasRepository despesasRepository)
         {
             this.dbContext = dbContext;
+            this.receitasRepository = receitasRepository;
+            this.despesasRepository = despesasRepository;
         }
 
         public ResumoResponse GetResumoMes(int ano, int mes)
         {
-            var receitas = dbContext.Receitas.Where(r => r.Data.Year.Equals(ano)).Where(r => r.Data.Month.Equals(mes)).ToList();
+            var receitas = receitasRepository.ListByMes(ano, mes);
             double receitasTotal = 0;
             foreach(var r in receitas)
             {
                 receitasTotal += r.Valor;
             }
 
-            var despesas = dbContext.Despesas.Where(r => r.Data.Year.Equals(ano)).Where(r => r.Data.Month.Equals(mes)).ToList();
+            var despesas = despesasRepository.ListByMes(ano, mes);
             double despesasTotal = 0;
             foreach(var d in despesas)
             {
