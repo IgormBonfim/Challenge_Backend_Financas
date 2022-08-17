@@ -23,7 +23,11 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
-                var receitaQuery = dbContext.Receitas.Where(r => r.Descricao.Equals(request.Descricao)).Where(r => r.Data.Year.Equals(request.Data.Year)).Where(r => r.Data.Month.Equals(request.Data.Month)).FirstOrDefault();
+                var receitaQuery = dbContext.Receitas
+                    .Where(r => r.Descricao.Equals(request.Descricao))
+                    .Where(r => r.Data.Year.Equals(request.Data.Year))
+                    .Where(r => r.Data.Month.Equals(request.Data.Month))
+                    .FirstOrDefault();
                 if (receitaQuery != null)
                 {
                     return new Response()
@@ -91,12 +95,19 @@ namespace Challenge_Backend_Financas.Repositories
 
         public List<Receita> ListByDescicao(string descricao)
         {
-            return dbContext.Receitas.Where(r => r.Descricao.Equals(descricao)).Include(r => r.Categoria).ToList();
+            return dbContext.Receitas
+                .Where(r => r.Descricao.Equals(descricao))
+                .Include(r => r.Categoria)
+                .ToList();
         }
 
         public List<Receita> ListByMes(int ano, int mes)
         {
-            return dbContext.Receitas.Where(r => r.Data.Year.Equals(ano)).Where(r => r.Data.Month.Equals(mes)).Include(r => r.Categoria).ToList();
+            return dbContext.Receitas
+                .Where(r => r.Data.Year.Equals(ano))
+                .Where(r => r.Data.Month.Equals(mes))
+                .Include(r => r.Categoria)
+                .ToList();
         }
 
         public Response Update(int id, FinancasRequest request)
