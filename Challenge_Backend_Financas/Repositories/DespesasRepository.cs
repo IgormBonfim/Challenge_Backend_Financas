@@ -34,7 +34,7 @@ namespace Challenge_Backend_Financas.Repositories
                     Descricao = request.Descricao,
                     Valor = request.Valor,
                     IdCategoria = request.IdCategoria,
-                    Data = request.Data.Date,
+                    Data = request.Data,
                 };
                 dbContext.Despesas.Add(despesaDb);
                 dbContext.SaveChanges();

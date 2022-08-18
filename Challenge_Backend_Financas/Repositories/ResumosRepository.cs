@@ -1,6 +1,8 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
+using Challenge_Backend_Financas.Entities.Categorias;
 using Challenge_Backend_Financas.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Challenge_Backend_Financas.Repositories
 {
@@ -40,6 +42,22 @@ namespace Challenge_Backend_Financas.Repositories
                 DespesasTotal = despesasTotal,
                 SaldoFinal = receitasTotal - despesasTotal
             };
+        }
+
+        public double GetGastoPorCategoria(int ano, int mes, string categoria)
+        {
+            var receitasCategoria = dbContext.Receitas
+                .Include(r => r.Categoria)
+                .Where(r => r.Categoria.NomeCategoria == categoria)
+                .Where(r => r.Data.Year == ano)
+                .Where(r => r.Data.Month == mes)
+                .ToList();
+            double gastoPorCategoria = 0;
+            foreach (var r in receitasCategoria)
+            {
+                gastoPorCategoria += r.Valor;
+            }
+            return gastoPorCategoria;
         }
     }
 }

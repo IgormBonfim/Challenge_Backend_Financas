@@ -40,7 +40,7 @@ namespace Challenge_Backend_Financas.Repositories
                 {
                     Descricao = request.Descricao,
                     Valor = request.Valor,
-                    Data = request.Data.Date,
+                    Data = request.Data,
                     IdCategoria = request.IdCategoria,
                 };
                 dbContext.Receitas.Add(receitaDb);
