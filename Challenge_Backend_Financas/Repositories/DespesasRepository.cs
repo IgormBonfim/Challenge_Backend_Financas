@@ -23,9 +23,7 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
-                var receitaQuery = dbContext.Despesas.Where(r => r.Descricao.Equals(request.Descricao)).Where(r => r.Data.Year.Equals(request.Data.Year)).Where(r => r.Data.Month.Equals(request.Data.Month)).FirstOrDefault();
-                
-                if(receitaQuery != null)
+                if(RetornaDespesaExiste(request) != null)
                 {
                     return new Response() { Mensagem = "Essa despesa já foi cadastrada esse mês" };
                 }
@@ -86,12 +84,12 @@ namespace Challenge_Backend_Financas.Repositories
 
         public List<Despesa> ListByDescicao(string descricao)
         {
-            return dbContext.Despesas.Where(d => d.Descricao.Equals(descricao)).Include(d => d.Categoria).ToList();
+            return dbContext.Despesas.Where(d => d.Descricao == descricao).Include(d => d.Categoria).ToList();
         }
 
         public List<Despesa> ListByMes(int ano, int mes)
         {
-            return dbContext.Despesas.Where(d => d.Data.Year.Equals(ano)).Where(d => d.Data.Month.Equals(mes)).Include(d => d.Categoria).ToList();
+            return dbContext.Despesas.Where(d => d.Data.Year == ano).Where(d => d.Data.Month == mes).Include(d => d.Categoria).ToList();
         }
 
         public Response Update(int id, FinancasRequest request)
@@ -103,13 +101,13 @@ namespace Challenge_Backend_Financas.Repositories
             try
             {
                 var despesaQuery = dbContext.Despesas
-                    .Where(r => r.Descricao.Equals(request.Descricao))
-                    .Where(r => r.Data.Year.Equals(request.Data.Year))
-                    .Where(r => r.Data.Month.Equals(request.Data.Month))
+                    .Where(r => r.Descricao == request.Descricao)
+                    .Where(r => r.Data.Year == request.Data.Year)
+                    .Where(r => r.Data.Month == request.Data.Month)
                     .FirstOrDefault();
                 var despesaDb = dbContext.Despesas.Find(id);
 
-                if (despesaQuery != null && despesaQuery.Id != id)
+                if (RetornaDespesaExiste(request) != null && despesaQuery.Id != id)
                 {
                     return new Response() { Mensagem = "Não foi possível atualizar a despesa, pois a despesa está duplicada" };
                 }
@@ -124,6 +122,16 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 return new Response() { Mensagem = "Ocorreu um erro ao atualizar a despesa"};
             }
+        }
+
+        public Despesa RetornaDespesaExiste(FinancasRequest request)
+        {
+            var despesaQuery = dbContext.Despesas
+                    .Where(r => r.Descricao == request.Descricao)
+                    .Where(r => r.Data.Year == request.Data.Year)
+                    .Where(r => r.Data.Month == request.Data.Month)
+                    .FirstOrDefault();
+            return despesaQuery;
         }
     }
 }
