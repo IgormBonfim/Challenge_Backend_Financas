@@ -18,5 +18,6 @@ namespace Challenge_Backend_Financas.Configuracoes
         public DbSet<Receita> Receitas { get; set; }
         public DbSet<Despesa> Despesas { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
     }
 }
