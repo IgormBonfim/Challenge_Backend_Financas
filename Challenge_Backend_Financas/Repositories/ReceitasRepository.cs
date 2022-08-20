@@ -23,17 +23,9 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
-                var receitaQuery = dbContext.Receitas
-                    .Where(r => r.Descricao.Equals(request.Descricao))
-                    .Where(r => r.Data.Year.Equals(request.Data.Year))
-                    .Where(r => r.Data.Month.Equals(request.Data.Month))
-                    .FirstOrDefault();
-                if (receitaQuery != null)
+                if (RetornaReceitaExiste(request) != null)
                 {
-                    return new Response()
-                    {
-                        Mensagem = "Essa receita já foi cadastrada esse mês"
-                    };
+                    return new Response() { Mensagem = "Essa receita já foi cadastrada esse mês" };
                 }
 
                 var receitaDb = new Receita()
@@ -45,17 +37,11 @@ namespace Challenge_Backend_Financas.Repositories
                 };
                 dbContext.Receitas.Add(receitaDb);
                 dbContext.SaveChanges();
-                return new Response()
-                {
-                    Mensagem = "Receita adicionada com sucesso"
-                };
+                return new Response() { Mensagem = "Receita adicionada com sucesso" };
             }
             catch
             {
-                return new Response()
-                {
-                    Mensagem = "Erro ao cadastrar receita"
-                };
+                return new Response() { Mensagem = "Erro ao cadastrar receita" };
             }
         }
 
@@ -118,16 +104,15 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
-                var receitaQuery = dbContext.Receitas
-                    .Where(r => r.Descricao.Equals(request.Descricao))
-                    .Where(r => r.Data.Year.Equals(request.Data.Year))
-                    .Where(r => r.Data.Month.Equals(request.Data.Month))
-                    .FirstOrDefault();
+                var receitaQuery = RetornaReceitaExiste(request);
                 var receitaDb = dbContext.Receitas.Find(id);
 
                 if (receitaQuery != null && receitaQuery.Id != id)
                 {
-                    return new Response() { Mensagem = "Não foi possível atualizar a receita, pois a receita está duplicada" };
+                    return new Response() 
+                    { 
+                        Mensagem = "Não foi possível atualizar a receita, pois a receita está duplicada" 
+                    };
                 }
                 receitaDb.Descricao = request.Descricao;
                 receitaDb.Valor = request.Valor;
@@ -140,6 +125,15 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 return new Response() { Mensagem = "Ocorreu um erro ao atualizar receita"};
             }
+        }
+
+        public Receita RetornaReceitaExiste(FinancasRequest request)
+        {
+            return dbContext.Receitas
+                    .Where(r => r.Descricao.Equals(request.Descricao))
+                    .Where(r => r.Data.Year.Equals(request.Data.Year))
+                    .Where(r => r.Data.Month.Equals(request.Data.Month))
+                    .FirstOrDefault();
         }
     }
 }

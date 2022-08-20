@@ -16,7 +16,7 @@ namespace Challenge_Backend_Financas.Models
 
         [Column("ValorDespesa")]
         [Required]
-        public double Valor { get; set; }
+        public decimal Valor { get; set; }
 
         [Column("DataDespesa")]
         [Required]

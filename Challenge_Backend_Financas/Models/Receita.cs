@@ -16,7 +16,7 @@ namespace Challenge_Backend_Financas.Models
 
         [Column("ValorReceita")]
         [Required]
-        public double Valor { get; set; }
+        public decimal Valor { get; set; }
 
         [Column("DataReceita")]
         [Required]

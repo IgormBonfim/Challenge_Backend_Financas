@@ -100,14 +100,10 @@ namespace Challenge_Backend_Financas.Repositories
             }
             try
             {
-                var despesaQuery = dbContext.Despesas
-                    .Where(r => r.Descricao == request.Descricao)
-                    .Where(r => r.Data.Year == request.Data.Year)
-                    .Where(r => r.Data.Month == request.Data.Month)
-                    .FirstOrDefault();
+                var despesaQuery = RetornaDespesaExiste(request);
                 var despesaDb = dbContext.Despesas.Find(id);
 
-                if (RetornaDespesaExiste(request) != null && despesaQuery.Id != id)
+                if (despesaQuery != null && despesaQuery.Id != id)
                 {
                     return new Response() { Mensagem = "Não foi possível atualizar a despesa, pois a despesa está duplicada" };
                 }

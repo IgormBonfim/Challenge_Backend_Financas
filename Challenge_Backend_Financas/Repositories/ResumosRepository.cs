@@ -51,10 +51,10 @@ namespace Challenge_Backend_Financas.Repositories
             return gastoCategoriasResponses;
         }
 
-        public double GetDespesasByMes(int ano, int mes)
+        public decimal GetDespesasByMes(int ano, int mes)
         {
             var despesas = despesasRepository.ListByMes(ano, mes);
-            double despesasTotal = 0;
+            decimal despesasTotal = 0;
             foreach (var d in despesas)
             {
                 despesasTotal += d.Valor;
@@ -62,10 +62,10 @@ namespace Challenge_Backend_Financas.Repositories
             return despesasTotal;
         }
 
-        public double GetReceitasByMes(int ano, int mes)
+        public decimal GetReceitasByMes(int ano, int mes)
         {
             var receitas = receitasRepository.ListByMes(ano, mes);
-            double receitasTotal = 0;
+            decimal receitasTotal = 0;
             foreach (var r in receitas)
             {
                 receitasTotal += r.Valor;
@@ -81,7 +81,7 @@ namespace Challenge_Backend_Financas.Repositories
                 .Where(r => r.Data.Year == ano)
                 .Where(r => r.Data.Month == mes)
                 .ToList();
-            double gastoPorCategoria = 0;
+            decimal gastoPorCategoria = 0;
             foreach (var r in despesasCategoria)
             {
                 gastoPorCategoria += r.Valor;

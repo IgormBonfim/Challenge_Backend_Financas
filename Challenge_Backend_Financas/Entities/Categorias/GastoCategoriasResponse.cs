@@ -3,6 +3,6 @@
     public class GastoCategoriasResponse
     {
         public string NomeCategoria { get; set; }
-        public double GastoTotal { get; set; }
+        public decimal GastoTotal { get; set; }
     }
 }

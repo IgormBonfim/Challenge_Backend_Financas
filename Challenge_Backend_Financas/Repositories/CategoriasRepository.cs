@@ -19,8 +19,7 @@ namespace Challenge_Backend_Financas.Repositories
         {
             try
             {
-                var categoriaQuery = dbContext.Categorias.Where(c => c.NomeCategoria == request.Nome);
-                if (categoriaQuery != null)
+                if (RetornaCategoriaExiste(request) != null)
                 {
                     return new Response() { Mensagem = "Essa categoria já está cadastrada" };
                 }
@@ -75,8 +74,7 @@ namespace Challenge_Backend_Financas.Repositories
         {
             try
             {
-                var categoriaQuery = dbContext.Categorias.Where(c => c.NomeCategoria.Equals(request.Nome)).FirstOrDefault();
-                if (categoriaQuery != null)
+                if (RetornaCategoriaExiste(request) != null)
                 {
                     return new Response() { Mensagem = "Erro, categoria já existente" };
                 }
@@ -90,6 +88,11 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 return new Response() { Mensagem = "Ocorreu um erro ao atualizar categoria" };
             }
+        }
+
+        public Categoria RetornaCategoriaExiste(CategoriasRequest request)
+        {
+            return dbContext.Categorias.Where(c => c.NomeCategoria.Equals(request.Nome)).FirstOrDefault();
         }
     }
 }
