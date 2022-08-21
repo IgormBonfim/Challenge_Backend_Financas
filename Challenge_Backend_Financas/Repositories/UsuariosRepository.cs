@@ -39,6 +39,15 @@ namespace Challenge_Backend_Financas.Repositories
             }
         }
 
+        public bool ExisteUsuario(UsuarioRequest request)
+        {
+            var user = dbContext.Usuarios
+                .Where(u => u.Email == request.Email)
+                .Where(u => u.Senha == request.Senha)
+                .FirstOrDefault();
+            return user != null;
+        }
+
         public Usuario VerificaEmailCadastrado(UsuarioRequest request)
         {
             return dbContext.Usuarios.Where(u => u.Email == request.Email).FirstOrDefault();
