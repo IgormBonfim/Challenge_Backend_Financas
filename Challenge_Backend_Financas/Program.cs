@@ -13,6 +13,8 @@ builder.Services.AddDbContext<Contexto>(x => x.UseMySql(
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.Parse("8.0.28")
     ));
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
+
 
 builder.Services.AddScoped<IReceitasRepository, ReceitasRepository>();
 builder.Services.AddScoped<IDespesasRepository, DespesasRepository>();
@@ -34,6 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthorization();
 
