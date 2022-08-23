@@ -6,7 +6,7 @@ namespace Challenge_Backend_Financas.Entities
     {
         public string Descricao { get; set; }
         public decimal Valor { get; set; }
-        public DateTime Data { get; set; }
+        public string Data { get; set; }
         public Categoria Categoria { get; set; }
     }
 }

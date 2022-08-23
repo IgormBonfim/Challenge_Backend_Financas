@@ -17,9 +17,9 @@ namespace Challenge_Backend_Financas.Controllers
         }
 
         [HttpGet]
-        public List<FinancaResponse> GetAll()
+        public List<FinancasResponse> GetAll()
         {
-            return this.repository.List();
+            return repository.List();
         }
 
         [HttpGet("{id}")]
@@ -29,13 +29,13 @@ namespace Challenge_Backend_Financas.Controllers
         }
 
         [HttpGet("descricao")]
-        public List<Receita> GetByDescricao([FromQuery] string descricao)
+        public List<FinancasResponse> GetByDescricao([FromQuery] string descricao)
         {
             return repository.ListByDescicao(descricao);
         }
 
         [HttpGet("{ano}/{mes}")]
-        public List<Receita> GetByMes([FromRoute] int ano, [FromRoute] int mes)
+        public List<FinancasResponse> GetByMes([FromRoute] int ano, [FromRoute] int mes)
         {
             return repository.ListByMes(ano, mes);
         }

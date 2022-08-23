@@ -68,24 +68,24 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 Descricao = receitaDb.Descricao,
                 Valor = receitaDb.Valor,
-                Data = receitaDb.Data,
+                Data = receitaDb.Data.ToShortDateString(),
                 Categoria = categoriaDb
             };
             return receitaReturn;
         }
 
-        public List<FinancaResponse> List()
+        public List<FinancasResponse> List()
         {
             var receitas = dbContext.Receitas.Include(r => r.Categoria).ToList();
 
-            List<FinancaResponse> response = new List<FinancaResponse>();
+            List<FinancasResponse> response = new List<FinancasResponse>();
 
             foreach (var receita in receitas)
             {
                 var texto = receita.Descricao;
                 var descricaoMaiusculo = char.ToUpper(texto[0]) + texto.Substring(1);
 
-                var financa = new FinancaResponse()
+                var financa = new FinancasResponse()
                 {
                     Descricao = descricaoMaiusculo,
                     Valor = receita.Valor,
@@ -97,21 +97,57 @@ namespace Challenge_Backend_Financas.Repositories
             return response;
         }
 
-        public List<Receita> ListByDescicao(string descricao)
+        public List<FinancasResponse> ListByDescicao(string descricao)
         {
-            return dbContext.Receitas
+            var financas = dbContext.Receitas
                 .Where(r => r.Descricao.Equals(descricao))
                 .Include(r => r.Categoria)
                 .ToList();
+
+            List<FinancasResponse> response = new List<FinancasResponse>();
+
+            foreach(var financa in financas)
+            {
+                var texto = financa.Descricao;
+                var descricaoMaiusculo = char.ToUpper(texto[0]) + texto.Substring(1);
+
+                FinancasResponse financaResponse = new FinancasResponse()
+                {
+                    Descricao = descricaoMaiusculo,
+                    Valor = financa.Valor,
+                    Data = financa.Data.ToShortDateString(),
+                    Categoria = financa.Categoria,
+                };
+                response.Add(financaResponse);
+            }
+            return response;
         }
 
-        public List<Receita> ListByMes(int ano, int mes)
+        public List<FinancasResponse> ListByMes(int ano, int mes)
         {
-            return dbContext.Receitas
+            var financas = dbContext.Receitas
                 .Where(r => r.Data.Year.Equals(ano))
                 .Where(r => r.Data.Month.Equals(mes))
                 .Include(r => r.Categoria)
                 .ToList();
+
+            List<FinancasResponse> response = new List<FinancasResponse>();
+
+            foreach (var financa in financas)
+            {
+                var texto = financa.Descricao;
+                var descricaoMaiusculo = char.ToUpper(texto[0]) + texto.Substring(1);
+
+                FinancasResponse financaResponse = new FinancasResponse()
+                {
+                    Descricao = descricaoMaiusculo,
+                    Valor = financa.Valor,
+                    Data = financa.Data.ToShortDateString(),
+                    Categoria = financa.Categoria,
+                };
+                response.Add(financaResponse);
+            }
+            return response;
         }
 
         public Response Update(int id, FinancasRequest request)
