@@ -17,7 +17,7 @@ namespace Challenge_Backend_Financas.Controllers
         }
 
         [HttpGet]
-        public List<Receita> GetAll()
+        public List<FinancaResponse> GetAll()
         {
             return this.repository.List();
         }

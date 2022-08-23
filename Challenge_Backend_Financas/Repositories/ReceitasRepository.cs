@@ -74,9 +74,27 @@ namespace Challenge_Backend_Financas.Repositories
             return receitaReturn;
         }
 
-        public List<Receita> List()
+        public List<FinancaResponse> List()
         {
-            return dbContext.Receitas.Include(r => r.Categoria).ToList();
+            var receitas = dbContext.Receitas.Include(r => r.Categoria).ToList();
+
+            List<FinancaResponse> response = new List<FinancaResponse>();
+
+            foreach (var receita in receitas)
+            {
+                var texto = receita.Descricao;
+                var descricaoMaiusculo = char.ToUpper(texto[0]) + texto.Substring(1);
+
+                var financa = new FinancaResponse()
+                {
+                    Descricao = descricaoMaiusculo,
+                    Valor = receita.Valor,
+                    Data = receita.Data.ToShortDateString(),
+                    Categoria = receita.Categoria
+                };
+                response.Add(financa);
+            }
+            return response;
         }
 
         public List<Receita> ListByDescicao(string descricao)
