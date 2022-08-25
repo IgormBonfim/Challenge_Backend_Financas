@@ -87,6 +87,7 @@ namespace Challenge_Backend_Financas.Repositories
 
                 var financa = new FinancasResponse()
                 {
+                    Id = receita.Id,
                     Descricao = descricaoMaiusculo,
                     Valor = receita.Valor,
                     Data = receita.Data.ToShortDateString(),
@@ -113,6 +114,7 @@ namespace Challenge_Backend_Financas.Repositories
 
                 FinancasResponse financaResponse = new FinancasResponse()
                 {
+                    Id = financa.Id,
                     Descricao = descricaoMaiusculo,
                     Valor = financa.Valor,
                     Data = financa.Data.ToShortDateString(),
@@ -140,6 +142,7 @@ namespace Challenge_Backend_Financas.Repositories
 
                 FinancasResponse financaResponse = new FinancasResponse()
                 {
+                    Id = financa.Id,
                     Descricao = descricaoMaiusculo,
                     Valor = financa.Valor,
                     Data = financa.Data.ToShortDateString(),

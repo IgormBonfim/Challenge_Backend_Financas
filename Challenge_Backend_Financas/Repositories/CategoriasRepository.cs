@@ -21,7 +21,11 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 if (RetornaCategoriaExiste(request) != null)
                 {
-                    return new Response() { Mensagem = "Essa categoria já está cadastrada" };
+                    return new Response() 
+                    {
+                        Mensagem = "Essa categoria já está cadastrada",
+                        Type = "warning"
+                    };
                 }
 
                 var categoriaDb = new Categoria()
@@ -31,11 +35,19 @@ namespace Challenge_Backend_Financas.Repositories
                 };
                 dbContext.Categorias.Add(categoriaDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Categoria adicionada com sucesso" };
+                return new Response() 
+                {
+                    Mensagem = "Categoria adicionada com sucesso" ,
+                    Type = "success"
+                };
             }
             catch
             {
-                return new Response() { Mensagem = "Ocorreu um erro ao adicionar a categoria" };
+                return new Response() 
+                { 
+                    Mensagem = "Ocorreu um erro ao adicionar a categoria",
+                    Type = "danger"
+                };
             }
         }
 
@@ -46,11 +58,19 @@ namespace Challenge_Backend_Financas.Repositories
                 var categoriaDb = dbContext.Categorias.Find(id);
                 dbContext.Categorias.Remove(categoriaDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Categoria removida com sucesso" };
+                return new Response()
+                { 
+                    Mensagem = "Categoria removida com sucesso",
+                    Type = "success"
+                };
             }
             catch
             {
-                return new Response() { Mensagem = "Erro ao remover categoria" };
+                return new Response() 
+                { 
+                    Mensagem = "Erro ao remover categoria",
+                    Type = "danger"
+                };
             }
         }
 
@@ -67,7 +87,7 @@ namespace Challenge_Backend_Financas.Repositories
 
         public List<Categoria> List()
         {
-            return dbContext.Categorias.ToList();
+            return dbContext.Categorias.OrderBy(categoria => categoria.Id).ToList();
         }
 
         public Response Update(int id, CategoriasRequest request)
@@ -76,17 +96,29 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 if (RetornaCategoriaExiste(request) != null)
                 {
-                    return new Response() { Mensagem = "Erro, categoria já existente" };
+                    return new Response() 
+                    { 
+                        Mensagem = "Erro, categoria já existente" ,
+                        Type = "warning"
+                    };
                 }
                 var categoriaDb = dbContext.Categorias.Find(id);
                 categoriaDb.NomeCategoria = request.Nome;
                 dbContext.Update(categoriaDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Categoria atualizada com sucesso" };
+                return new Response() 
+                { 
+                    Mensagem = "Categoria atualizada com sucesso" ,
+                    Type = "success"
+                };
             }
             catch
             {
-                return new Response() { Mensagem = "Ocorreu um erro ao atualizar categoria" };
+                return new Response() 
+                { 
+                    Mensagem = "Ocorreu um erro ao atualizar categoria",
+                    Type = "danger"
+                };
             }
         }
 

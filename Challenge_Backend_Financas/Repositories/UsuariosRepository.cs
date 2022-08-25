@@ -20,7 +20,11 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 if(VerificaEmailCadastrado(request) != null)
                 {
-                    return new Response() { Mensagem = "Esse email já está cadastrado" };
+                    return new Response()
+                    {
+                        Mensagem = "Esse email já está cadastrado",
+                        Type = "danger"
+                    };
                 }
 
                 var usuarioDb = new Usuario()
@@ -30,12 +34,20 @@ namespace Challenge_Backend_Financas.Repositories
                 };
                 dbContext.Usuarios.Add(usuarioDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Usuário cadastrado com sucesso" };
+                return new Response() 
+                {
+                    Mensagem = "Usuário cadastrado com sucesso",
+                    Type = "success"
+                };
 
             }
             catch
             {
-                return new Response() { Mensagem = "Ocorreu um erro ao cadastrar usuario" };
+                return new Response() 
+                { 
+                    Mensagem = "Ocorreu um erro ao cadastrar usuario",
+                    Type = "danger"
+                };
             }
         }
 
@@ -48,7 +60,7 @@ namespace Challenge_Backend_Financas.Repositories
             return user != null;
         }
 
-        public Usuario VerificaEmailCadastrado(UsuarioRequest request)
+        private Usuario VerificaEmailCadastrado(UsuarioRequest request)
         {
             return dbContext.Usuarios.Where(u => u.Email == request.Email).FirstOrDefault();
         }
