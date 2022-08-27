@@ -25,7 +25,10 @@ namespace Challenge_Backend_Financas.Repositories
             {
                 if (RetornaReceitaExiste(request) != null)
                 {
-                    return new Response() { Mensagem = "Essa receita já foi cadastrada esse mês" };
+                    return new Response() { 
+                        Mensagem = "Essa receita já foi cadastrada esse mês",
+                        Type = "warning"
+                    };
                 }
 
                 var receitaDb = new Receita()
@@ -37,11 +40,19 @@ namespace Challenge_Backend_Financas.Repositories
                 };
                 dbContext.Receitas.Add(receitaDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Receita adicionada com sucesso" };
+                return new Response() 
+                { 
+                    Mensagem = "Receita adicionada com sucesso",
+                    Type = "success"
+                };
             }
             catch
             {
-                return new Response() { Mensagem = "Erro ao cadastrar receita" };
+                return new Response() 
+                { 
+                    Mensagem = "Erro ao cadastrar receita",
+                    Type = "danger"
+                };
             }
         }
 
@@ -52,11 +63,19 @@ namespace Challenge_Backend_Financas.Repositories
                 var receitaDb = dbContext.Receitas.Find(id);
                 dbContext.Receitas.Remove(receitaDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Receita de id: " + id + " removida com sucesso" };
+                return new Response() 
+                { 
+                    Mensagem = "Receita de id: " + id + " removida com sucesso",
+                    Type = "success"
+                };
             }
             catch
             {
-                return new Response() { Mensagem = "Ocorreu um erro ao remover receita" };
+                return new Response() 
+                { 
+                    Mensagem = "Ocorreu um erro ao remover receita",
+                    Type = "danger"
+                };
             }
         }
 
@@ -168,7 +187,8 @@ namespace Challenge_Backend_Financas.Repositories
                 {
                     return new Response() 
                     { 
-                        Mensagem = "Não foi possível atualizar a receita, pois a receita está duplicada" 
+                        Mensagem = "Não foi possível atualizar a receita, pois a receita está duplicada",
+                        Type = "warning"
                     };
                 }
                 receitaDb.Descricao = request.Descricao;
@@ -176,11 +196,19 @@ namespace Challenge_Backend_Financas.Repositories
                 receitaDb.IdCategoria = request.IdCategoria;
                 dbContext.Update(receitaDb);
                 dbContext.SaveChanges();
-                return new Response() { Mensagem = "Receita atualizada com sucesso" };
+                return new Response() 
+                { 
+                    Mensagem = "Receita atualizada com sucesso",
+                    Type = "success"
+                };
             }
             catch
             {
-                return new Response() { Mensagem = "Ocorreu um erro ao atualizar receita"};
+                return new Response() 
+                { 
+                    Mensagem = "Ocorreu um erro ao atualizar receita",
+                    Type = "danger"
+                };
             }
         }
 
