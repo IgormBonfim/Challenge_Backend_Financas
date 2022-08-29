@@ -120,7 +120,7 @@ namespace Challenge_Backend_Financas.Repositories
         public List<FinancasResponse> ListByDescicao(string descricao)
         {
             var financas = dbContext.Receitas
-                .Where(r => r.Descricao.Equals(descricao))
+                .Where(r => EF.Functions.Like(r.Descricao, "%"+descricao+"%"))
                 .Include(r => r.Categoria)
                 .ToList();
 
