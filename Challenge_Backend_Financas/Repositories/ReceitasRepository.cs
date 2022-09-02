@@ -81,14 +81,16 @@ namespace Challenge_Backend_Financas.Repositories
 
         public FinancasResponse GetById(int id)
         {
-            var receitaDb = dbContext.Receitas.Find(id);
-            var categoriaDb = dbContext.Categorias.Find(receitaDb.IdCategoria);
+            var receitaDb = dbContext.Receitas.Where(r => r.Id == id).Include(r => r.Categoria).FirstOrDefault();
+            var descricaoMaiusculo = char.ToUpper(receitaDb.Descricao[0]) + receitaDb.Descricao.Substring(1);
+
             var receitaReturn = new FinancasResponse()
             {
-                Descricao = receitaDb.Descricao,
+                Id = receitaDb.Id,
+                Descricao = descricaoMaiusculo,
                 Valor = receitaDb.Valor,
                 Data = receitaDb.Data.ToShortDateString(),
-                Categoria = categoriaDb
+                Categoria = receitaDb.Categoria
             };
             return receitaReturn;
         }
