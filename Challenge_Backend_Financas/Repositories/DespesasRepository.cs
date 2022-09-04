@@ -61,18 +61,13 @@ namespace Challenge_Backend_Financas.Repositories
 
         public FinancasResponse GetById(int id)
         {
-            var despesaDb = dbContext.Despesas.Find(id);
-            var categoriaDb = dbContext.Categorias.Find(despesaDb.IdCategoria);
+            var despesaDb = dbContext.Despesas.Include(d => d.Categoria).Where(d => d.Id == id).FirstOrDefault();
             var despesaResponse = new FinancasResponse()
             {
                 Descricao = despesaDb.Descricao,
                 Valor = despesaDb.Valor,
                 Data = despesaDb.Data.ToShortDateString(),
-                Categoria = new Categoria
-                {
-                    Id = categoriaDb.Id,
-                    NomeCategoria = categoriaDb.NomeCategoria
-                }
+                Categoria = despesaDb.Categoria
             };
             return despesaResponse;
         }
