@@ -1,6 +1,7 @@
 ﻿using Challenge_Backend_Financas.Configuracoes;
 using Challenge_Backend_Financas.Entities;
 using Challenge_Backend_Financas.Models;
+using Challenge_Backend_Financas.Models.Enums;
 using Challenge_Backend_Financas.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,7 +28,7 @@ namespace Challenge_Backend_Financas.Repositories
                 {
                     return new Response() { 
                         Mensagem = "Essa receita já foi cadastrada esse mês",
-                        Type = "warning"
+                        Type = AlertTypesEnum.Aviso
                     };
                 }
 
@@ -43,7 +44,7 @@ namespace Challenge_Backend_Financas.Repositories
                 return new Response() 
                 { 
                     Mensagem = "Receita adicionada com sucesso",
-                    Type = "success"
+                    Type = AlertTypesEnum.Sucesso
                 };
             }
             catch
@@ -51,7 +52,7 @@ namespace Challenge_Backend_Financas.Repositories
                 return new Response() 
                 { 
                     Mensagem = "Erro ao cadastrar receita",
-                    Type = "danger"
+                    Type = AlertTypesEnum.Erro
                 };
             }
         }
@@ -66,7 +67,7 @@ namespace Challenge_Backend_Financas.Repositories
                 return new Response() 
                 { 
                     Mensagem = "Receita de id: " + id + " removida com sucesso",
-                    Type = "success"
+                    Type = AlertTypesEnum.Sucesso
                 };
             }
             catch
@@ -74,7 +75,7 @@ namespace Challenge_Backend_Financas.Repositories
                 return new Response() 
                 { 
                     Mensagem = "Ocorreu um erro ao remover receita",
-                    Type = "danger"
+                    Type = AlertTypesEnum.Erro
                 };
             }
         }
@@ -187,10 +188,10 @@ namespace Challenge_Backend_Financas.Repositories
 
                 if (receitaQuery != null && receitaQuery.Id != id)
                 {
-                    return new Response() 
-                    { 
+                    return new Response()
+                    {
                         Mensagem = "Não foi possível atualizar a receita, pois a receita está duplicada",
-                        Type = "warning"
+                        Type = AlertTypesEnum.Aviso
                     };
                 }
                 receitaDb.Descricao = request.Descricao;
@@ -201,7 +202,7 @@ namespace Challenge_Backend_Financas.Repositories
                 return new Response() 
                 { 
                     Mensagem = "Receita atualizada com sucesso",
-                    Type = "success"
+                    Type = AlertTypesEnum.Sucesso
                 };
             }
             catch
@@ -209,7 +210,7 @@ namespace Challenge_Backend_Financas.Repositories
                 return new Response() 
                 { 
                     Mensagem = "Ocorreu um erro ao atualizar receita",
-                    Type = "danger"
+                    Type = AlertTypesEnum.Erro
                 };
             }
         }
